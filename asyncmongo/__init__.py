@@ -33,7 +33,7 @@ DESCENDING = -1
 """Descending sort order."""
 GEO2D = "2d"
 """Index specifier for a 2-dimensional `geospatial index`"""
-TEXT = { $meta: "textScore" }
+TEXT = { "$meta": "textScore" }
 """TEXT Index sort order."""
 
 from errors import (Error, InterfaceError, AuthenticationError, DatabaseError, RSConnectionError,
