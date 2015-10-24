@@ -268,7 +268,7 @@ class Cursor(object):
     
     def find(self, spec=None, fields=None, skip=0, limit=0,
                  timeout=True, snapshot=False, tailable=False, sort=None,
-                 max_scan=None, slave_okay=False,
+                 max_scan=None, max_time_ms=None, slave_okay=False,
                  _must_use_master=False, _is_command=False, hint=None, debug=False,
                  comment=None, callback=None):
         """Query the database.
@@ -323,6 +323,8 @@ class Cursor(object):
             :meth:`~pymongo.cursor.Cursor.sort` for details.
           - `max_scan` (optional): limit the number of documents
             examined when performing the query
+          - `max_time_ms` (optional): limit the query runtime on
+            server in milliseconds
           - `slave_okay` (optional): is it okay to connect directly
             to and perform queries on a slave instance
         
@@ -367,6 +369,7 @@ class Cursor(object):
         self.__snapshot = snapshot
         self.__ordering = sort and helpers._index_document(sort) or None
         self.__max_scan = max_scan
+        self.__max_time_ms = max_time_ms
         self.__slave_okay = slave_okay
         self.__explain = False
         self.__hint = hint
@@ -446,6 +449,8 @@ class Cursor(object):
             spec["$snapshot"] = True
         if self.__max_scan:
             spec["$maxScan"] = self.__max_scan
+        if self.__max_time_ms:
+            spec["$maxTimeMS"] = self.__max_time_ms
         return spec
     
     
